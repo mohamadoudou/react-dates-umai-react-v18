@@ -1,6 +1,6 @@
 {
-  "name": "react-dates-umai-react-v18",
-  "version": "22.0.0",
+  "name": "@moctarm/react-dates-umai-react-v18",
+  "version": "23.0.1",
   "description": "A responsive and accessible date range picker component built with React.  Fork to add support for React 17 and React 18.",
   "main": "index.js",
   "scripts": {
