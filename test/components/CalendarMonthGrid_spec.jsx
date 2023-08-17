@@ -1,41 +1,35 @@
-import React from "react";
-import { expect } from "chai";
-import { shallow } from "enzyme";
-import moment from "moment";
-import sinon from "sinon-sandbox";
+import React from 'react';
+import { expect } from 'chai';
+import { shallow } from 'enzyme';
+import moment from 'moment';
+import sinon from 'sinon-sandbox';
 
-import CalendarMonth from "../../src/components/CalendarMonth";
-import CalendarMonthGrid from "../../src/components/CalendarMonthGrid";
+import CalendarMonth from '../../src/components/CalendarMonth';
+import CalendarMonthGrid from '../../src/components/CalendarMonthGrid';
 
-import getTransformStyles from "../../src/utils/getTransformStyles";
+import getTransformStyles from '../../src/utils/getTransformStyles';
 
-describe("CalendarMonthGrid", () => {
-  it("the number of CalendarMonths rendered matches props.numberOfMonths + 2", () => {
+describe('CalendarMonthGrid', () => {
+  it('the number of CalendarMonths rendered matches props.numberOfMonths + 2', () => {
     const NUM_OF_MONTHS = 5;
-    const wrapper = shallow(
-      <CalendarMonthGrid numberOfMonths={NUM_OF_MONTHS} />
-    ).dive();
+    const wrapper = shallow(<CalendarMonthGrid numberOfMonths={NUM_OF_MONTHS} />).dive();
     expect(wrapper.find(CalendarMonth)).to.have.lengthOf(NUM_OF_MONTHS + 2);
   });
 
-  it("has style equal to getTransformStyles(foo)", () => {
+  it('has style equal to getTransformStyles(foo)', () => {
     const translationValue = 100;
-    const transformStyles = getTransformStyles(
-      `translateX(${translationValue}px)`
-    );
-    const wrapper = shallow(
-      <CalendarMonthGrid translationValue={translationValue} />
-    ).dive();
+    const transformStyles = getTransformStyles(`translateX(${translationValue}px)`);
+    const wrapper = shallow(<CalendarMonthGrid translationValue={translationValue} />).dive();
     Object.keys(transformStyles).forEach((key) => {
-      expect(wrapper.prop("style")[key]).to.equal(transformStyles[key]);
+      expect(wrapper.prop('style')[key]).to.equal(transformStyles[key]);
     });
   });
 
-  it("does not generate duplicate months", () => {
+  it('does not generate duplicate months', () => {
     const initialMonth = moment();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <CalendarMonthGrid numberOfMonths={12} initialMonth={initialMonth} />
-    ).dive();
+    )).dive();
 
     wrapper.instance().UNSAFE_componentWillReceiveProps({
       initialMonth,
@@ -45,18 +39,18 @@ describe("CalendarMonthGrid", () => {
     const { months } = wrapper.state();
 
     const collisions = months
-      .map((m) => m.format("YYYY-MM"))
+      .map((m) => m.format('YYYY-MM'))
       .reduce((acc, m) => ({ ...acc, [m]: true }), {});
 
     expect(Object.keys(collisions).length).to.equal(months.length);
   });
 
-  it("does not setState if hasMonthChanged and hasNumberOfMonthsChanged are falsy", () => {
-    const setState = sinon.stub(CalendarMonthGrid.prototype, "setState");
+  it('does not setState if hasMonthChanged and hasNumberOfMonthsChanged are falsy', () => {
+    const setState = sinon.stub(CalendarMonthGrid.prototype, 'setState');
     const initialMonth = moment();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <CalendarMonthGrid numberOfMonths={12} initialMonth={initialMonth} />
-    ).dive();
+    )).dive();
 
     wrapper.instance().UNSAFE_componentWillReceiveProps({
       initialMonth,
@@ -66,11 +60,11 @@ describe("CalendarMonthGrid", () => {
     expect(setState.callCount).to.eq(0);
   });
 
-  it("works with the same number of months", () => {
+  it('works with the same number of months', () => {
     const initialMonth = moment();
-    const wrapper = shallow(
+    const wrapper = shallow((
       <CalendarMonthGrid numberOfMonths={12} initialMonth={initialMonth} />
-    ).dive();
+    )).dive();
 
     wrapper.instance().UNSAFE_componentWillReceiveProps({
       initialMonth,
@@ -81,18 +75,16 @@ describe("CalendarMonthGrid", () => {
     const { months } = wrapper.state();
 
     const collisions = months
-      .map((m) => m.format("YYYY-MM"))
+      .map((m) => m.format('YYYY-MM'))
       .reduce((acc, m) => ({ ...acc, [m]: true }), {});
 
     expect(Object.keys(collisions).length).to.equal(months.length);
   });
 
-  describe("#onMonthSelect", () => {
-    it("calls onMonthChange", () => {
+  describe('#onMonthSelect', () => {
+    it('calls onMonthChange', () => {
       const onMonthChangeSpy = sinon.spy();
-      const wrapper = shallow(
-        <CalendarMonthGrid onMonthChange={onMonthChangeSpy} />
-      ).dive();
+      const wrapper = shallow(<CalendarMonthGrid onMonthChange={onMonthChangeSpy} />).dive();
       const currentMonth = moment();
       const newMonthVal = (currentMonth.month() + 5) % 12;
       wrapper.instance().onMonthSelect(currentMonth, newMonthVal);
@@ -100,12 +92,10 @@ describe("CalendarMonthGrid", () => {
     });
   });
 
-  describe("#onYearSelect", () => {
-    it("calls onYearChange", () => {
+  describe('#onYearSelect', () => {
+    it('calls onYearChange', () => {
       const onYearChangeSpy = sinon.spy();
-      const wrapper = shallow(
-        <CalendarMonthGrid onYearChange={onYearChangeSpy} />
-      ).dive();
+      const wrapper = shallow(<CalendarMonthGrid onYearChange={onYearChangeSpy} />).dive();
       const currentMonth = moment();
       const newMonthVal = (currentMonth.month() + 5) % 12;
       wrapper.instance().onYearSelect(currentMonth, newMonthVal);
